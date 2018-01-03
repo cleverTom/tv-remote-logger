@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logger-print</title>
+</head>
+<body>
+<div id="show">
+    <ul>
+        <li>line1</li>
+        <li>line2</li>
+        <li>line3</li>
+        <li>line4</li>
+        <li>line5</li>
+        <li>line6</li>
+        <li>line7</li>
+        <li>line8</li>
+        <li>line9</li>
+        <li>line10</li>
+    </ul>
+</div>
+<button type="button" id="btn1">click send log info</button>
+<script src="../client/client.js"></script>
+<script>
+    logger.auto({
+        url: 'http://localhost:8083',
+        page: 'log',
+        build: false,
+        remote: true,
+        exec: true,
+        result: function (res) {
+            console.log(res);
+        },
+        err: function (error) {
+            window.onerror = function (err,filename,line) {
+                error(err,filename,line);
+            };
+        },
+        exports: ['log as debug', 'error']
+    });
+    document.querySelector('#btn1').addEventListener('click', function () {
+        logger.log('DOM节点', document.querySelector('#show'));
+        var obj = {
+            a: 10,
+            b: 20,
+            c: 30,
+            e: {
+                g: 30
+            }
+        };
+        obj.d = obj;
+        obj.e.f = obj.e;
+        logger.log('循环引用', obj);
+        logger.log('类数组', {0: 'a', 1: 'b', 2: 'c', length: 3});
+        error('测试错误');
+        logger.time("hello");
+        logger.log("hello,wolrd", "I'm jack smith");
+        logger.log({name: "jack"});
+        logger.warn("Warn: 我是警告信息", {success: true});
+        logger.info("我是提示信息");
+        logger.log({a: 1, b: {c: 2}}, [1, 2, 3]);
+        logger.log([1, 2, 3]);
+        logger.table([{name: "jack", age: 24, prop: {a: 1}}, {name: "leo", age: 25, prop: {a: 1}}, {
+            name: "lily",
+            age: 30,
+            sex: "female",
+            prop: {a: 1}
+        }]);
+        logger.timeEnd("hello");
+        logger.assert(1 === 2, "1 !== 2");
+
+        logger.dir({
+            a: 1,
+            b: 2,
+            c: {
+                d: 4,
+                f: {
+                    e: 6
+                }
+            }
+        });
+
+        logger.dirxml("<note><age>24</age><name>jack</name><prop>hello,world</prop></note>");
+
+        for (var i = 0; i < 10; i++) {
+            logger.count("hello,world");
+        }
+
+        logger.log("Hello, %s. You've called me %d times.", "Bob", 10);
+    });
+</script>
+</body>
+</html>

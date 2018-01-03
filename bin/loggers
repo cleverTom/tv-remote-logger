@@ -1,0 +1,109 @@
+#!/usr/bin/env node
+const exec = require('child_process').exec;
+const writeFileSync = require('fs').writeFileSync;
+const execSync = require('child_process').execSync;
+const exist = require('fs').existsSync;
+const readFileSync = require('fs').readFileSync;
+const yaml = require('js-yaml');
+const yargs = require('yargs');
+const path = require('path');
+const root = execSync('echo $HOME', {encoding: 'UTF-8'}).slice(0, -1);
+const config = path.join(root, '.loggers.config.yml');
+const pwd = path.join(__dirname, '../');
+const shell = execSync('echo $SHELL', {encoding: 'UTF-8'}).slice(0, -1);
+const open = require('open');
+
+function install(port, shell) {
+    console.log('[Logger] 开始构建Logger服务...');
+    writeFileSync(config, yaml.dump({port: port}), 'utf-8');
+    console.log('[Logger] 创建.logger.config.yml文件,写入配置文件');
+    execSync('echo "\n# logger-check" >> ~/.' + shell + 'rc');
+    execSync('echo "(node ' + pwd + 'check.js) &" >> ~/.' + shell + 'rc');
+    console.log('[Logger] 注入.' + shell + 'rc,监听PM2:logger服务');
+    execSync('PORT=' + port + ' pm2 start --name logger server.js', {cwd: pwd});
+    console.log('[Logger] 启动PM2:logger服务,监听端口:' + port + ',首页地址: http://localhost:' + port);
+}
+
+function restart() {
+    exec('pm2 jlist', function (err, stdout, stderr) {
+        if (err || stderr) {
+            return console.error('err: \n', err, 'stderr: \n', stderr);
+        }
+        try {
+            var jlist = JSON.parse(stdout);
+            var root = execSync('echo $HOME', {encoding: 'UTF-8'}).slice(0, -1);
+            var config = path.join(root, '.loggers.config.yml');
+            var port = yaml.load(readFileSync(config), 'UTF-8').port || 8083;
+            var instance = jlist.filter(function (ins) {
+                if (ins.name === 'logger') {
+                    return ins;
+                }
+            });
+            if (!instance.length) {
+                console.log('[Logger] 重启PM2:logger服务,监听端口:' + port + ',首页地址: http://localhost:' + port);
+                return execSync('PORT=' + port + ' pm2 start --name logger server.js', {cwd: pwd});
+            }
+            else {
+                const loggerIns = instance[0];
+                if (loggerIns.pm2_env.status === 'stopped') {
+                    console.log('[Logger] 重启PM2:logger服务,监听端口:' + port + ',首页地址: http://localhost:' + port);
+                    return execSync('pm2 start logger');
+                }
+                else if (loggerIns.pm2_env.status === 'online') {
+                    console.log('[Logger] 重启PM2:logger服务,监听端口:' + port + ',首页地址: http://localhost:' + port);
+                    return execSync('PORT=' + port + ' pm2 reload --update-env logger', {cwd: pwd});
+                }
+            }
+        }
+        catch (err) {
+            console.error('检查Logger失败', err);
+        }
+    });
+}
+
+const argv = yargs
+    .usage('Usage: loggers [options]')
+    .command('install', 'install loggers server', function (yargs) {
+        return yargs.option('port', {
+            alias: 'p',
+            default: 8083,
+            describe: '默认启动的端口'
+        })
+    }, function (argv) {
+        try {
+            const port = argv.port;
+            if (shell.includes('zsh')) {
+                install(port, 'zsh');
+            }
+            else if (shell.includes('bash')) {
+                install(port, 'bash');
+            }
+        }
+        catch (err) {
+            console.error('初始化安装Loggers失败', err);
+        }
+    })
+    .command('port <port>', 'set logger default port', function (yargs) {
+        return yargs.argv;
+    }, function (argv) {
+        const port = argv.port;
+        try {
+            writeFileSync(config, yaml.dump({port: port}), 'UTF-8');
+            console.log('[Logger] 重置Logger默认端口成功');
+            restart();
+        }
+        catch (err) {
+            console.error('修改Logger默认端口失败', err);
+        }
+    })
+    .command('start', 'restart logger server', function (yargs) {
+        restart();
+    })
+    .command('open', 'open index page',function () {
+        const port = yaml.load(readFileSync(config)).port;
+        open('http://localhost:' + port);
+    })
+    .example('loggers install', 'loggers instaling...')
+    .alias('h', 'help')
+    .help('h')
+    .argv;

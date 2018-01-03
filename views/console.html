@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logger-output</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/console.css">
+    <link rel="stylesheet" href="/public/codeMirror/codemirror.css">
+    <link rel="stylesheet" href="/public/codeMirror/panda-syntax.css">
+    <link rel="stylesheet" href="/public/codeMirror/show-hint.css">
+</head>
+<body>
+<div class="show-box">
+    <h1 class="title">Logger-output</h1>
+    <p class="page">PageName: <span>{{page}}</span></p>
+    <p class="address">address: <span>{{address}}</span></p>
+    <button id="clearPage" type="button" class="btn btn-warning clear-btn">清空日志</button>
+    <button id="clip" class="btn btn-info clear-btn" data-clipboard-text="http://{{address}}">复制地址</button>
+</div>
+<div>
+    <textarea  id="command" rows="3" class="form-control" placeholder="输入js代码..."></textarea>
+    <button id="clear-content" type="button" class="btn btn-danger">清空内容</button>
+    <button id="exec-content" type="button" class="btn btn-success">执行代码</button>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>编号</th>
+        <th>方法</th>
+        <th>级别</th>
+        <th>时间</th>
+        <th>Unix时间戳</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<script src="/public/js/socket.io.js"></script>
+<script src="/public/js/clipboard.min.js"></script>
+<script src="/public/codeMirror/codemirror.js"></script>
+<script src="/public/codeMirror/javascript.js"></script>
+<script src="/public/codeMirror/active-line.js"></script>
+<script src="/public/codeMirror/show-hint.js"></script>
+<script src="/public/codeMirror/javascript-hint.js"></script>
+<script src="/public/codeMirror/closebrackets.js"></script>
+<script src="/public/js/console.js"></script>
+</body>
+</html>

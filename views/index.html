@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logger-index</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/index.css">
+</head>
+<body>
+<div id="container">
+    <h1>Logger-index</h1>
+    <form class="form-inline">
+        <div class="form-group">
+            <input type="text" id="page" class="form-control" placeholder="请输入页面名称">
+            <button type="button" id="btn" class="btn btn-success">连接</button>
+        </div>
+    </form>
+    <table class="table">
+        <tr>
+            <th>环境</th>
+            <th>地址</th>
+        </tr>
+        <tr>
+            <td>开发</td>
+            <td><a href="http://g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.min.js" target="_blank">g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.min.js</a></td>
+            <td><button id="cp1" type="button" class="btn btn-success" data-clipboard-text="g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.min.js">复制</button></td>
+        </tr>
+        <tr>
+            <td>生产</td>
+            <td><a href="http://g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.build.min.js" target="_blank">g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.build.min.js</a></td>
+            <td><button id="cp2" type="button" class="btn btn-success" data-clipboard-text="g.alicdn.com/tvtaobao-assets/fills/1.0.17/client.build.min.js">复制</button></td>
+        </tr>
+    </table>
+</div>
+<script src="/public/js/clipboard.min.js"></script>
+<script src="/public/js/index.js"></script>
+</body>
+</html>

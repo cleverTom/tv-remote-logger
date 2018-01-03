@@ -1,0 +1,32 @@
+{
+    "name": "logger-rebuild",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": {
+        "loggers": "./bin/loggers"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "express": "^4.16.2",
+        "js-yaml": "^3.10.0",
+        "node-schedule": "^1.2.5",
+        "open": "0.0.5",
+        "socket.io": "^2.0.4",
+        "swig": "^1.4.2",
+        "yargs": "^10.0.3"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "engines": {
+        "node": ">=6.5.0"
+    }
+}
