@@ -7,18 +7,18 @@ module.exports = exports = function (port, io) {
         .get(function (req, res) {
             const page = req.params.page;
             if (pageMap.has(page)) {
-                const commnd = pageMap.get(page);
+                const command = pageMap.get(page);
                 pageMap.delete(page);
                 res.json({
                     status: true,
-                    message: 'cmd send to excute',
-                    command: commnd
+                    message: 'excute command',
+                    command: command
                 });
             }
             else {
                 res.json({
                     status: false,
-                    message: 'no cmd to excute',
+                    message: 'no excute command',
                     command: null
                 });
             }

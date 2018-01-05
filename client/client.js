@@ -18,6 +18,8 @@
         var isJSONP = dataType === 'jsonp';
         var jsonp = option.jsonp || 'callback';
         var jsonpCallback = option.jsonpCallback || 'callback' + Math.ceil(Math.random() * 10000);
+
+        //处理jsonp请求
         var setJSONP = function (reqName, callbackName) {
             var script = document.createElement('script');
             script.src = url;
@@ -51,7 +53,7 @@
             }
         }
         url = (query_str ? url + '?' + query_str : url) + (!cache && type === 'GET' ? (query_str ? '&' : '?') + ('ajaxCache=' + Date.now()) : '');
-        //处理jsonp;
+        //解析jsonp;
         if (type === 'GET' && isJSONP) {
             return setJSONP(jsonp, jsonpCallback);
         }
@@ -172,6 +174,9 @@
                 if (/element/i.test(Object.prototype.toString.call(item))) {
                     arr[index] = item.outerHTML;
                     store.push(index);
+                }
+                else if (/\w*(?=\])/.exec(Object.prototype.toString.call(item))[0].toLocaleLowerCase() === 'error') {
+                    arr[index] = item.toString();
                 }
                 return store;
             }, []);
@@ -306,35 +311,29 @@
             }
         },
         execCommand: function () {
-            var self = this;
-            ajax({
-                url: this.url + "/execute/" + this.page,
-                type: 'GET',
-                timeout: 10000,
-                success: function (response) {
-
-                }.bind(this),
-                error: function (xhr) {
-                    if (xhr.error === 'timeout') {
-                        this.execCommand();
-                    }
-                }.bind(this)
-            });
             setInterval(function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", self.url + "/execute/" + self.page, true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.status === 200 && xhr.readyState === 4) {
-                        var response = JSON.parse(xhr.responseText);
+                ajax({
+                    url: this.url + "/execute/" + this.page,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
                         if (response.status === true) {
                             var command = decodeURIComponent(response.command);
-                            eval(command);
-                            self.result && self.result(response);
+                            try {
+                                eval(command);
+                                this.result && this.result(response);
+                            }
+                            catch (err) {
+                                this.result && this.result(err);
+                                this.send('error', [err]);
+                            }
                         }
-                    }
-                };
-                xhr.send(null);
-            }, 1000);
+                        else {
+                            this.result && this.result(response);
+                        }
+                    }.bind(this)
+                });
+            }.bind(this), 1000);
         }
     };
 

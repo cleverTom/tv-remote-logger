@@ -32,14 +32,15 @@
             console.log(res);
         },
         err: function (error) {
-            window.onerror = function (err,filename,line) {
-                error(err,filename,line);
+            window.onerror = function (err, filename, line) {
+                error(err, filename, line);
             };
         },
         exports: ['log as debug', 'error']
     });
     document.querySelector('#btn1').addEventListener('click', function () {
-        logger.log('DOM节点', document.querySelector('#show'));
+        logger.error('Error', new TypeError('我是错误信息'));
+       /* logger.log('DOM节点', document.querySelector('#show'));
         var obj = {
             a: 10,
             b: 20,
@@ -86,7 +87,7 @@
             logger.count("hello,world");
         }
 
-        logger.log("Hello, %s. You've called me %d times.", "Bob", 10);
+        logger.log("Hello, %s. You've called me %d times.", "Bob", 10);*/
     });
 </script>
 </body>
