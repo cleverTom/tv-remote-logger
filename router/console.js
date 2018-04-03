@@ -83,7 +83,7 @@ module.exports = exports = function (port, io) {
     rule.second = loop;
     schedule.scheduleJob(rule, function () {
         for (let [page, ins] of pageMap) {
-            if (ins.lastModified && Date.now() - ins.lastModified > 10 * 60 * 1000) {
+            if (ins.lastModified && Date.now() - ins.lastModified > 20 * 60 * 1000) {
                 console.log('session过期,删除page: ', page);
                 pageMap.delete(page);
             }

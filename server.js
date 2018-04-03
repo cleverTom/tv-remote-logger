@@ -43,6 +43,10 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
+app.get('/favicon.ico',function(req,res) {
+    res.sendFile(path.join(__dirname,'logviewer.png'));
+});
+
 app.use('/console', consoleRouter);
 app.use('/execute', execRouter);
 

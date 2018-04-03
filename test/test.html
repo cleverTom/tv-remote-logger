@@ -27,7 +27,7 @@
         page: 'log',
         build: false,
         remote: true,
-        exec: true,
+        exec: false,
         result: function (res) {
             console.log(res);
         },
@@ -40,7 +40,7 @@
     });
     document.querySelector('#btn1').addEventListener('click', function () {
         logger.error('Error', new TypeError('我是错误信息'));
-       /* logger.log('DOM节点', document.querySelector('#show'));
+        logger.log('DOM节点', document.querySelector('#show'));
         var obj = {
             a: 10,
             b: 20,
@@ -87,7 +87,7 @@
             logger.count("hello,world");
         }
 
-        logger.log("Hello, %s. You've called me %d times.", "Bob", 10);*/
+        logger.log("Hello, %s. You've called me %d times.", "Bob", 10);
     });
 </script>
 </body>
