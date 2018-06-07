@@ -7,7 +7,7 @@
         "loggers": "./bin/loggers",
         "logs": "./bin/loggers"
     },
-    "keywords": ["remote-logger","console.log", "transport log"],
+    "keywords": ["remote-logger", "console.log", "transport log"],
     "author": "MengHaoRan",
     "license": "ISC",
     "dependencies": {
@@ -20,6 +20,14 @@
         "swig": "^1.4.2",
         "yargs": "^10.0.3"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/linkMHran/tv-remote-logger.git"
+    },
+    "bugs": {
+        "url": "https://github.com/linkMHran/tv-remote-logger/issues"
+    },
+    "homepage": "https://github.com/linkMHran/tv-remote-logger",
     "os": [
         "darwin",
         "linux"
