@@ -1,16 +1,14 @@
 {
-    "name": "logger-rebuild",
+    "name": "tv-remote-logger",
     "version": "1.0.0",
-    "description": "",
+    "description": "remote transport console.log print message",
     "main": "server.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
     "bin": {
-        "loggers": "./bin/loggers"
+        "loggers": "./bin/loggers",
+        "logs": "./bin/loggers"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": ["remote-logger","console.log", "transport log"],
+    "author": "MengHaoRan",
     "license": "ISC",
     "dependencies": {
         "body-parser": "^1.18.2",
